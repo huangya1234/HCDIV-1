@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+<head>
+    <title>Assignment 1</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-top: 50px;
+            font-size: 18px;
+            background-color:rgb(7, 83, 130)
+        }
+        h2,h3,h4 {
+            font-family: Georgia, serif; 
+            color: #c45a88; 
+            font-weight: bold; 
+        }
+        table {
+            margin: 0 auto;
+            width: 80%;
+            border-collapse: collapse;
+            background-color:rgb(88, 175, 197)
+        }
+        th, td {
+            border: 2px solid #e5bbbb;
+            padding: 8px;
+            text-align: center;
+            color: aliceblue;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Singapore 2-hr Weather Forecast</h2>
+<h3>Huang Yanan </h3>
+<h4 id="timestring">Data updated at: </h4>
+<table id="weatherTable">
+    <tr>
+        <th>Area</th>
+        <th>Forecast</th>
+    </tr>
+</table>
+
+<script>
+fetch('https://api.data.gov.sg/v1/environment/2-hour-weather-forecast')
+  .then(response => response.json())
+  .then(responsedata => {
+    
+    let timestamp = responsedata.items[0].update_timestamp;
+    let forecasts = responsedata.items[0].forecasts;
+   
+    document.getElementById("timestring").innerText = "Data updated at: " + timestamp;
+
+    let table = document.getElementById("weatherTable");
+    forecasts.forEach(forecast => {
+        let row = table.insertRow();
+        let cell1 = row.insertCell(0);
+        let cell2 = row.insertCell(1);
+        cell1.innerText = forecast.area;
+        cell2.innerText = forecast.forecast;
+    });
+    console.log(timestamp);
+    console.log(forecasts);
+  })
+  .catch(error => console.error('Error fetching data:', error));
+  
+
+
+</script>
+
+</body>
+</html>
